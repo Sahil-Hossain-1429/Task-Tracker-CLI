@@ -108,8 +108,11 @@ function listTasks(filter?: string): void {
     });
 }
 
-
-function deleteTasks(id: number) {
+/**
+ * 
+ * @param id - Delete item with this id
+ */
+function deleteTasks(id: number): void {
     const tasks = loadTasks();
     const index = tasks.findIndex((t) => t.id === id);
 
@@ -120,23 +123,53 @@ function deleteTasks(id: number) {
     console.log(`Tasks ${id} deleted successfully.`);
 }
 
-const action: string | undefined = command[0];
+/**
+ * 
+ * @param id - Update Item with this id
+ * @param description - This is the updated description 
+ */
+function updateTasks(id: number, description: string): void {
+
+    const tasks = loadTasks();
+    const task = tasks.find((t) => t.id === id);
+    
+    if (!task) return console.log(`Task with ID ${id} not found.`);
+
+    task.description = description;
+    task.updatedAt = currentTime();
+    
+    saveTasks(tasks);
+
+    console.log(`Task ${id} updated successfully.`);
+}
+
+/**
+ * , , - skips node + script path
+ * action = add | delete | update | list
+ */
+const [, , action, arg1, arg2] = process.argv;
+
 
 switch (action) {
     case "add":
-        if (!command[1]) {
+        if (!arg1) {
             throw new Error("Description is required");
         }
-        addTasks(command[1]);
+        addTasks(arg1);
         break;
 
     case "delete":
-        if (!command[1]) { console.log("Usage: task-cli delete <id>"); break; }
-        deleteTasks(Number(command[1]));
+        if (!arg1) { console.log("Usage: task-cli delete <id>"); break; }
+        deleteTasks(Number(arg1));
         break;
 
+    case "update":
+        if (!arg1 || !arg2) { console.log("Usage: task-cli update <id> <description>"); break; }
+        updateTasks(Number(arg1),arg2);
+        break;
+    
     case "list":
-        listTasks(command[1]);
+        listTasks(arg1);
         break;
 
     default:
