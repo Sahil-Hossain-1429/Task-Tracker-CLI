@@ -50,3 +50,12 @@ function loadTasks(): Task[] {
         return JSON.parse(raw) as Task[];
     }, []);
 }
+
+/**
+ * Write Values inside json file 
+ * 
+ * @param tasks - The Tasks we are going to write inside the json file
+ */
+function saveTasks(tasks: Task[]) : void {
+    fs.writeFileSync(FILE_PATH, JSON.stringify(tasks, null, 2), "utf-8");
+}
