@@ -92,19 +92,35 @@ function addTasks(description: string): void {
     console.log(`Task added successfully (ID: ${task.id})`);
 }
 
-const action: string | undefined = command[0];
 
-function listTasks(filter ?: string): void {
+/**
+ * 
+ * @param filter - This string contains the all the status message including undefined
+ */
+function listTasks(filter?: string): void {
     const tasks = loadTasks();
     const filtered = filter ? tasks.filter((t) => t.status === filter) : tasks;
 
-    if(filtered.length === 0) return console.log("No tasks found.");
+    if (filtered.length === 0) return console.log("No tasks found.");
 
     filtered.forEach((t) => {
         console.log(`[${t.id}] (${t.status}) ${t.description}`);
     });
 }
 
+
+function deleteTasks(id: number) {
+    const tasks = loadTasks();
+    const index = tasks.findIndex((t) => t.id === id);
+
+    if (index === -1) return console.log(`Task with ID ${id} not found`);
+    tasks.splice(index, 1);
+    saveTasks(tasks);
+
+    console.log(`Tasks ${id} deleted successfully.`);
+}
+
+const action: string | undefined = command[0];
 
 switch (action) {
     case "add":
@@ -113,10 +129,16 @@ switch (action) {
         }
         addTasks(command[1]);
         break;
-    
+
+    case "delete":
+        if (!command[1]) { console.log("Usage: task-cli delete <id>"); break; }
+        deleteTasks(Number(command[1]));
+        break;
+
     case "list":
         listTasks(command[1]);
-    
+        break;
+
     default:
         break;
 }
