@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -132,29 +134,46 @@ function updateTasks(id: number, description: string): void {
 
     const tasks = loadTasks();
     const task = tasks.find((t) => t.id === id);
-    
+
     if (!task) return console.log(`Task with ID ${id} not found.`);
 
     task.description = description;
     task.updatedAt = currentTime();
-    
+
     saveTasks(tasks);
 
     console.log(`Task ${id} updated successfully.`);
 }
 
 /**
+ * 
+ * @param id - Update Status with this id
+ * @param status - This is changed status
+ */
+function markTask(id: number, status: Statuses): void {
+    const tasks = loadTasks();
+    const task = tasks.find((t) => t.id === id);
+
+    if (!task) return console.log(`Task with ID ${id} not found`);
+
+    task.status = status;
+    task.updatedAt = currentTime();
+
+    saveTasks(tasks);
+
+    console.log(`Task ${id} marked as ${status}.`);
+}
+
+/**
  * , , - skips node + script path
- * action = add | delete | update | list
+ * action = add | delete | update | list | mark-in-progress | mark-in-done
  */
 const [, , action, arg1, arg2] = process.argv;
 
 
 switch (action) {
     case "add":
-        if (!arg1) {
-            throw new Error("Description is required");
-        }
+        if (!arg1) { console.log("Usage: task-cli add <description>"); break; }
         addTasks(arg1);
         break;
 
@@ -165,9 +184,19 @@ switch (action) {
 
     case "update":
         if (!arg1 || !arg2) { console.log("Usage: task-cli update <id> <description>"); break; }
-        updateTasks(Number(arg1),arg2);
+        updateTasks(Number(arg1), arg2);
         break;
-    
+
+    case "mark-in-progress":
+        if (!arg1) { console.log("Usage: task-cli mark-in-progress <id>"); break; }
+        markTask(Number(arg1), "in-progress");
+        break;
+
+    case "mark-done":
+         if (!arg1) { console.log("Usage: task-cli mark-done <id>"); break; }
+        markTask(Number(arg1), "done");
+        break;
+
     case "list":
         listTasks(arg1);
         break;

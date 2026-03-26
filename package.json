@@ -28,5 +28,8 @@
   "homepage": "https://github.com/Sahil-Hossain-1429/Task-Tracker-CLI#readme",
   "dependencies": {
     "process.argv": "^1.0.0"
+  },
+  "bin": {
+    "task-cli": "./dist/index.js"
   }
 }
