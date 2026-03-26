@@ -73,7 +73,12 @@ function getNextId(tasks: Task[]): number {
 }
 
 function currentTime(): string {
-    return new Date().toISOString();
+    const now = new Date();
+    const day = now.getDate().toString().padStart(2, '0');
+    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // months are 0-indexed
+    const date = now.getFullYear();
+
+    return `${day}-${month}-${date}`;
 }
 
 /**
@@ -193,7 +198,7 @@ switch (action) {
         break;
 
     case "mark-done":
-         if (!arg1) { console.log("Usage: task-cli mark-done <id>"); break; }
+        if (!arg1) { console.log("Usage: task-cli mark-done <id>"); break; }
         markTask(Number(arg1), "done");
         break;
 
