@@ -7,19 +7,20 @@ Tasks are persisted locally in a `tasks.json` file — no database required.
 
 ## Features
 
-- [ ] Add Tasks
-- [ ] Update Tasks
-- [ ] Delete tasks
-- [ ] Mark tasks **in-progress**
-- [ ] Mark tasks **done** 
-- [ ] List all tasks or filtered by status
+- Add Tasks
+- Update Tasks
+- Delete tasks
+- Mark tasks **in-progress**
+- Mark tasks **done** 
+- List all tasks or filtered by status
 
 ---
 
 ## Requirements
 
-- [ ] Node.js
-- [ ] Typescript
+- [Node.js](https://nodejs.org/) v25 or higher
+- npm v10 or higher
+- TypeScript v6 or higher 
 
 ---
 
